@@ -30,12 +30,12 @@ int main() {
 
     //subtraction
     int subtraction = *p1 - *p2;
-    printf("subtratction of %d %d is %d\n", *p1, *p2, subtraction);
+    printf("subtraction of %d %d is %d\n", *p1, *p2, subtraction);
 
     int addition = *p1 + *p2;
     printf("Addition of %d %d is %d\n", *p1, *p2, addition);
 
-    ptrdiff_t diff = p1 - p2; //this number of ellements between p1 and p2
+    ptrdiff_t diff = p1 - p2; //this number of elements between p1 and p2
     printf("number of elements in between p1 and p2: %d\n", diff);
 
 
