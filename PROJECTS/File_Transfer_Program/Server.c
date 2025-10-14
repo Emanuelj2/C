@@ -48,7 +48,7 @@ void handle_client(SOCKET client_socket)
         {
             printf("Failed to create file\n");
             send(client_socket, "FAIL", 4, 0);
-            closesocket(client_socket);
+            closesocket(client_socket); //close the client socket
             return;
         }
 
@@ -82,8 +82,40 @@ void handle_client(SOCKET client_socket)
     }
     else if(strcmp(header.command, "DOWNLOAD") == 0)
     {
-        //TODO:
+        printf("Downloading file %s (Size %lld bytes)\n", header.filename, header.filesize);
+
+        file_handle = CreateFileA(header.filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+        if(file_handle == INVALID_HANDLE_VALUE)
+        {
+            printf("Faild to download file.\n");
+            send(client_socket, "FAIL", 4, 0);
+            closesocket(client_socket); //close the client socket
+            return;
+        }
+
+        // Get actual file size
+        LARGE_INTEGER file_size;
+        GetFileSizeEx(file_handle, &file_size);
+        header.filesize = file_size.QuadPart;
+
+        
+        send(client_socket, (char*)&header.filesize, sizeof(header.filesize), 0);
+        // Send file data
+        DWORD bytes_read;
+        while (ReadFile(file_handle, buffer, BUFFER_SIZE, &bytes_read, NULL) && bytes_read > 0) {
+            send(client_socket, buffer, bytes_read, 0);
+            bytes_transferred += bytes_read;
+
+            double progress = (double)bytes_transferred / header.filesize * 100;
+            printf("\rProgress: %.2f%% (%lld/%lld bytes)", progress, bytes_transferred, header.filesize);
+        }
+        printf("\n");
+        CloseHandle(file_handle);
+        printf("File sent successfully\n");
+        
     }
+    closesocket(client_socket); //close the client socket
 }
 
 int main()
