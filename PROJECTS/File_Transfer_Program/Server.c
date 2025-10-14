@@ -6,7 +6,7 @@
 
 
 
-#pragma commment(lib, "Ws2_32.lib")
+#pragma coment(lib, "Ws2_32.lib")
 
 #define PORT 5555
 #define BUFFER_SIZE 65536
