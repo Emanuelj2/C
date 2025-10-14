@@ -44,5 +44,20 @@ int main()
     printf("%d\n", *(ptr+1)); // 2
     printf("%d\n", ptr[2]);   // 3 (ptr[i] is equivalent to *(ptr+i))
 
+
+    //multidimentioanl arrays
+
+    int matrix[3][4] = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 14, 12}
+    };
+
+    int *mptr = &matrix[0][0]; //start at the first element
+
+    printf("Accessing matrix with pointers");
+    printf("%d\n", *mptr); //this will get the value at (0,0)
+
+    printf("Value at (2, 3) is: %d\n", *(mptr + 2*4 + 2)); // *(base_pointer + row * num_cols + col)
     return 0;
 }
