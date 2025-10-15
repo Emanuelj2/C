@@ -4,8 +4,11 @@
 
 int strcomp_manual(const char *s1, const char *s2);
 int num_of_common_chars(const char* str1, const char* str2);
-
 int num_of_common_chars_unordered(const char* str1, const char* str2);
+void strcat_manual( char* dest, const char* src);
+
+
+
 
 int main()
 {
@@ -40,7 +43,7 @@ int main()
     printf("\n");
 
     //string comparison
-    char string1[] = "helloqwertsyuiop";
+    char string1[] = "helloqwertsyuiop ";
     char string2[] = "hellfdfsddo";
 
     int res = strcomp_manual(string1, string2);
@@ -48,6 +51,8 @@ int main()
     int res3 = num_of_common_chars_unordered(string1, string2);
     printf("num_of_common_chars %d\n", res2);
     printf("num_of_common_chars_unordered %d\n", res3);
+    strcat_manual( string1, string2);
+    printf("%s\n", string1);
 
 
     printf("\n");
@@ -105,4 +110,23 @@ int num_of_common_chars_unordered(const char* str1, const char* str2)
     }
     return common_count;
 
+}
+
+
+//string concatenation
+void strcat_manual( char* dest, const char* src)
+{
+    while(*dest) //move to the end of dest
+    {
+        dest++;
+    }
+
+    //copy src to dest
+    while(*src != '\0')
+    {
+        *dest = *src;
+        dest++;
+        src++; 
+    }
+    *dest = '\0';
 }
