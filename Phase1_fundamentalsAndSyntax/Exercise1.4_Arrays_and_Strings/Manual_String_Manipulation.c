@@ -65,7 +65,7 @@ int main()
 
     printf("Sentence: \"%s\"\n", sentence);
     printf("Word count: %d\n", count);
-    
+
     return 0;
 }
 
