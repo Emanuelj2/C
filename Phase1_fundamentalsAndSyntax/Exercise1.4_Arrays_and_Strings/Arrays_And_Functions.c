@@ -7,6 +7,7 @@ int count_evens(int arr[], int size);
 int* reverse_array(int *arr, int size);
 int binary_search(int arr[], int size, int target);
 void bubble_sort(int arr[], int size);
+int* ryans_function(int *arr, int size, int target);
 
 int main()
 {
@@ -28,9 +29,12 @@ int main()
     print_array(arr, size);
     int target = 6;
     int binary_search_res = binary_search(arr, size, target);
-    printf("binary search for number %d fount at index : %d", target, binary_search_res);
+    printf("binary search for number %d fount at index : %d\n", target, binary_search_res);
+    int* ryans_function_res = ryans_function(arr, size, target);
+    printf("Ryans function: ");
+    print_array(ryans_function_res, size - 1);
+    free(ryans_function_res);
     
-
     return 0;
 }
 void print_array(int arr[], int size)
@@ -157,4 +161,26 @@ void bubble_sort(int arr[], int size)
             }
         }
     }
+}
+
+
+int* ryans_function(int *arr, int size, int target)
+{
+    int *res = malloc((size - 1) * sizeof(int));
+    if(res == NULL)
+    {
+        return NULL;
+    }
+
+    int res_index = 0;
+    for(int i = 0; i < size; i++)
+    {
+        if(arr[i] == target)
+        {
+            continue; //skip the number
+        }
+        res[res_index++] = arr[i];
+        
+    }
+    return res;
 }
