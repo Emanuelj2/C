@@ -36,8 +36,7 @@ int main()
     print_array(ryans_function_res, size - 1);
     free(ryans_function_res);
     
-    int arr2[] = {1, 4, 6, 2, 8, 4, 6};
-    int is_sorted_res = is_sorted(arr2, size);
+    int is_sorted_res = is_sorted(arr, size);
     printf("is array sorted (1 = true, 0 = false): %d\n", is_sorted_res);
     
     return 0;
