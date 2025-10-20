@@ -8,6 +8,7 @@ int* reverse_array(int *arr, int size);
 int binary_search(int arr[], int size, int target);
 void bubble_sort(int arr[], int size);
 int* ryans_function(int *arr, int size, int target);
+int is_sorted(int arr[], int size);
 
 int main()
 {
@@ -34,6 +35,10 @@ int main()
     printf("Ryans function: ");
     print_array(ryans_function_res, size - 1);
     free(ryans_function_res);
+    
+    int arr2[] = {1, 4, 6, 2, 8, 4, 6};
+    int is_sorted_res = is_sorted(arr2, size);
+    printf("is array sorted (1 = true, 0 = false): %d\n", is_sorted_res);
     
     return 0;
 }
@@ -183,4 +188,22 @@ int* ryans_function(int *arr, int size, int target)
         
     }
     return res;
+}
+
+int is_sorted(int arr[], int size)
+{
+    for(int i = 1; i < size; i++)
+    {
+        //skips the duplicates
+        if(arr[i] == arr[i - 1])
+        {
+            continue;
+        }
+        if(arr[i] < arr[i - 1])
+        {
+            return 0;
+        }
+
+    }
+    return 1;
 }
