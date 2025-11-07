@@ -23,3 +23,13 @@ Resource* resource_create(size_t size)
     r->size = size;
     return r;
 }
+
+
+void resource_destroy(Resource* r)
+{
+    if(r != NULL)
+    {
+        free(r->data);
+        free(r);
+    }
+}
