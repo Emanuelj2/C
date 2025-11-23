@@ -3,6 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MAX_TEXT_LENGTH 1000
+#define MAX_WORD_LENGTH 50
+#define MAX_WORDS 200
+
 static const char *positive_words[] = {};
 static const char *negative_words[] = {};
 static const char *nutral_word[] = {};
@@ -94,6 +98,43 @@ int is_stop_word(const char *word)
         }
     }
     return 0;
+}
+
+//create the structuer for the sentiment score
+typedef struct
+{
+    int positive_score;
+    int negative_score;
+    int nutral_score;
+    float sentiment_ratio;
+    char sentiment;
+}SentimentResult;
+
+
+SentimentResult analyze_sentiment(const char* text)
+{
+    SentimentResult result = {0, 0, 0, 0.0, ""};
+    char text_copy[MAX_TEXT_LENGTH];
+    char word[MAX_WORD_LENGTH];
+
+    //preprocessing
+    // -copy the text
+    // -remove the stop_words 
+    strncpy(text_copy, text, MAX_TEXT_LENGTH - 1);
+    text_copy[MAX_TEXT_LENGTH - 1] = '\0';
+    to_lower(text_copy);
+
+    //tokenize the text
+    char *token = strtok(text_copy, " \t\n\r.,;!?\"'");
+
+    //analyze each word
+    while(token)
+    {
+        strcpy(word, token);
+        remove_punctuation(word);
+    }
+
+
 }
 
 
