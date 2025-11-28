@@ -33,7 +33,7 @@ void *producer_therad(void *arg)
 
         //insert them
         pthread_mutex_unlock(&mutex); //unlock buff
-        sem_wait(&full); //check if it is full
+        sem_post(&full); //check if it is full
     }
     return NULL;
 }
@@ -51,12 +51,31 @@ void *consumer_therad(void *arg)
         out = (out + 1) % CIRCULAR_BUFFER;
 
         pthread_mutex_unlock(&mutex);
-        sem_wait(&empty);
+        sem_post(&empty);
     }
     return NULL;
 }
 
 int main()
 {
+    pthread_t prod, cons;
+
+    //initialize semaphors
+    sem_init(&empty, 0, CIRCULAR_BUFFER);
+    sem_init(&full, 0, 0);
+    pthread_mutex_init(&mutex, NULL);
+
+    //create the thread
+    pthread_create(&prod, NULL, producer_therad, NULL);
+    pthread_create(&cons, NULL, consumer_therad, NULL);
+
+    //wait for compleation
+    pthread_join(prod, NULL);
+    pthread_join(cons, NULL);
+
+    pthread_mutex_destroy(&mutex);
+    sem_destroy(&empty);
+    sem_destroy(&full);
+    
     return 0;
 }
