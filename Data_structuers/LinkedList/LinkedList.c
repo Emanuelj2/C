@@ -41,7 +41,7 @@ void insert_tail(Node** head, int value)
 
     while(curr->next) //while there is a node ahead of the current node
     {
-        curr = node->next;
+        curr = curr->next;
     }
     curr->next = node;
 }
@@ -98,7 +98,35 @@ void delete_value(Node** head, int value)
         curr = curr->next;
     }
 }
-void delete_at(Node** head, int index);
+void delete_at(Node** head, int index)
+{
+    Node* curr = *head;
+    Node* prev = NULL;
+    int count = 0;
+
+    while(curr)
+    {
+        if(count == index)
+        {
+            if(prev == NULL)
+            {
+                *head = curr->next;
+                free(curr);
+                return;
+            }
+            else
+            {
+                prev->next = curr->next;
+                free(curr);
+                return;
+            }
+
+        }
+        prev = curr;
+        curr = curr->next;
+        count++;
+    }
+}
 
 
 //search fiunction
@@ -116,7 +144,22 @@ int search(Node* head, int value)
     return 0;
 }
 
-void reverse(Node** head);
+void reverse(Node** head)
+{
+    Node* prev = NULL;
+    Node* curr = *head;
+    Node* next = NULL;
+
+    while(curr)
+    {
+        next = curr->next;      // Store next node
+        curr->next = prev;      // Reverse the link
+        prev = curr;            // Move prev forward
+        curr = next;            // Move curr forward
+    }
+
+    *head = prev;  // Update head to the new first node
+}
 
 void print_list(Node* head)
 {
