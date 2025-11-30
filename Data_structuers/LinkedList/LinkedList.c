@@ -72,7 +72,32 @@ void insert_at(Node** head, int index, int value)
 }
 
 //delet operations
-void delete_value(Node** head, int value);
+void delete_value(Node** head, int value)
+{
+    Node* curr = *head; //used for iterating
+    Node* prev = NULL;
+
+    while (curr)
+    {
+        if(curr->data == value)
+        {
+            if(prev == NULL)
+            {
+                *head = curr->next;
+                free(curr);
+                return;
+            }
+            else
+            {
+                prev->next = curr->next;
+                free(curr);
+                return;
+            }
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+}
 void delete_at(Node** head, int index);
 
 
