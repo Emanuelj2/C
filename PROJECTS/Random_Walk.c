@@ -122,8 +122,8 @@ int main(int argc, char **argv)
 
         //move_agent(psurface, win, &agent0);
 
-        SDL_Delay(20);
+        SDL_Delay(20); //20fps
     }
     free(pagents);
     return 0;
-}
+}.
