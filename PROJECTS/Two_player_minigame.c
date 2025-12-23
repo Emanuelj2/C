@@ -15,6 +15,11 @@ void clamp_player(SDL_Rect *r)
         if(r->x + r->w > WIN_W) r->x = WIN_W - r->w;
         if(r->y + r->h > WIN_H) r->y = WIN_H - r->h;
 }
+//collision detection
+bool check_collision(SDL_Rect *rect1, SDL_Rect *rect2)
+{
+        return SDL_HasIntersection(rect1, rect2);
+}
 
 int main()
 {
@@ -42,6 +47,11 @@ int main()
             if(event.type == SDL_QUIT)
                 running = false;
         }
+
+        int old_x1 = rect1.x;
+        int old_y1 = rect1.y;
+        int old_y2 = rect2.y;
+        int old_x2 = rect2.x;
         
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         //red player
@@ -57,6 +67,15 @@ int main()
 
         clamp_player(&rect1);
         clamp_player(&rect2);
+
+        if(check_collision(&rect1, &rect2))
+        {
+                rect1.x = old_x1;
+                rect1.y = old_y1;
+                rect2.x = old_x2;
+                rect2.y = old_y2;
+        }
+
 
         // Draw background black
         SDL_FillRect(psurface, NULL, SDL_MapRGB(psurface->format, 0, 0, 0));
