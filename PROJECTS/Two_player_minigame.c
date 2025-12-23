@@ -4,6 +4,17 @@
 
 #define WIN_H 800
 #define WIN_W 800
+#define SPEED 5
+
+//rect stops at the window edges
+void clamp_player(SDL_Rect *r)
+{
+        if(r->x < 0) r->x = 0;
+        if(r->y < 0) r->y = 0;
+
+        if(r->x + r->w > WIN_W) r->x = WIN_W - r->w;
+        if(r->y + r->h > WIN_H) r->y = WIN_H - r->h;
+}
 
 int main()
 {
@@ -31,6 +42,21 @@ int main()
             if(event.type == SDL_QUIT)
                 running = false;
         }
+        
+        const Uint8 *keys = SDL_GetKeyboardState(NULL);
+        //red player
+        if(keys[SDL_SCANCODE_W])        rect1.y -= SPEED;
+        if(keys[SDL_SCANCODE_S])        rect1.y += SPEED;
+        if(keys[SDL_SCANCODE_A])        rect1.x -= SPEED;
+        if(keys[SDL_SCANCODE_D])        rect1.x += SPEED;
+        //blue player
+        if(keys[SDL_SCANCODE_UP])       rect2.y -= SPEED;
+        if(keys[SDL_SCANCODE_DOWN])     rect2.y += SPEED;
+        if(keys[SDL_SCANCODE_LEFT])     rect2.x -= SPEED;
+        if(keys[SDL_SCANCODE_RIGHT])    rect2.x += SPEED;
+
+        clamp_player(&rect1);
+        clamp_player(&rect2);
 
         // Draw background black
         SDL_FillRect(psurface, NULL, SDL_MapRGB(psurface->format, 0, 0, 0));
