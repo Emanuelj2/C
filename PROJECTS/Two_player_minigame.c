@@ -5,6 +5,38 @@
 #define WIN_H 800
 #define WIN_W 800
 #define SPEED 5
+#define MAX_BULLETS 25
+
+typedef struct
+{
+        SDL_Rect rect;
+        int vx;
+        int vy;
+        bool active;
+}Bullet;
+
+typedef struct
+{
+        int current;
+        int max;
+}Health;
+
+void init_bullets(Bullet bullets[])
+{
+}
+
+void shoot_bullet(Bullet bullet[], int x, int y, int vx, int vy)
+{
+}
+
+void update_bullet(Bullet bullets[])
+{
+}
+
+void draw_bullets(SDL_Surface *surface, Bullet bullets[])
+{
+}
+
 
 //rect stops at the window edges
 void clamp_player(SDL_Rect *r)
