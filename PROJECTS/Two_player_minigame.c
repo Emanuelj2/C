@@ -6,6 +6,8 @@
 #define WIN_W 800
 #define SPEED 5
 #define MAX_BULLETS 25
+#define BULLET_W 2
+#define BULLET_H 2
 
 typedef struct
 {
@@ -23,10 +25,32 @@ typedef struct
 
 void init_bullets(Bullet bullets[])
 {
+        for(int i = 0; i < MAX_BULLETS; i++)
+        {
+                bullet.active = false;
+                bullet[i].rect.y = 0;
+                bullet[i].rect.x = 0;
+                bullet[i].rext.vy = 0;
+                bullet[i].rect.vx = 0;
+                bullet[i].rect.w = BULLET_W;
+                bullet[i].rect.h = BULLET_H;
+        }
 }
 
 void shoot_bullet(Bullet bullet[], int x, int y, int vx, int vy)
 {
+        for(int i = 0; i < MAX_BULLETS; i++)
+        {
+                if(!bullet[i].active)
+                {
+                        bullet[i].rect.x = x;
+                        bullet[i].rect.y = y;
+                        bullet[i].rect.vx = vx;
+                        bullet[i].rect.vy = vy;
+                        bullet[i].rect.active = true;
+                        break;
+                }
+        }
 }
 
 void update_bullet(Bullet bullets[])
