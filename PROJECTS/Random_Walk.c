@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h> //initializing shut down functions
+#include <SDL.h> //initializing shut down functions
 #include <SDL2/SDL_image.h> //rendering images and graphics
 #include <SDL2/SDL_timer.h> //for using SDL_Delay()
 #include <stdlib.h>
