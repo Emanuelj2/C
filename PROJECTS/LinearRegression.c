@@ -64,11 +64,11 @@ int main(void)
 	InitWindow(WIDTH, HEIGHT, "Linear Regression");
 	SetTargetFPS(60);
 
+	draw_grid();
 	while(!WindowShouldClose())
 	{
 		BeginDrawing(); 
 			
-			draw_grid();
 			if(draw_button(20, 20, "Regenerate"))
 			{
 				draw_points(MAX_POINTS);
