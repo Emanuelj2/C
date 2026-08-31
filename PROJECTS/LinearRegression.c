@@ -25,12 +25,12 @@ void draw_grid()
 {
 	for(int32_t x = 0; x <= WIDTH; x += GRID_SPACING)
 	{
-		DrawLine(x, GRAPH_TOP, x, HEIGHT, WHITE);
+		DrawLine(x, GRAPH_TOP, x, HEIGHT, GRAY);
 	}
 
 	for(int32_t y = GRAPH_TOP; y <= HEIGHT; y += GRID_SPACING)
 	{
-		DrawLine(0, y, WIDTH, y, WHITE);
+		DrawLine(0, y, WIDTH, y, GRAY);
 	}
 }
 
@@ -97,7 +97,7 @@ void draw_points(int32_t n)
  * e = error term (residuals)
  */
 
-void linear_regression(float *b_0, float *b_1)
+void linear_regression(float *b_0, float *b_1, float *r_squared)
 {
 	float x_sum = 0;
 	float y_sum = 0;
@@ -114,6 +114,7 @@ void linear_regression(float *b_0, float *b_1)
 
 	float numerator = 0;
 	float denominator = 0;
+	float syy = 0;
 
 	for(int32_t i = 0; i < point_count; i++)
 	{
@@ -121,9 +122,12 @@ void linear_regression(float *b_0, float *b_1)
 		float dy = points[i].y - y_mean;
 		numerator += dx * dy;
 		denominator += dx * dx;
+		syy += dy * dy;
 	}
+
 	*b_1 = numerator/denominator;
 	*b_0 = y_mean - (*b_1) * x_mean;
+	*r_squared = (numerator * numerator) / (denominator * syy);
 }
 
 void draw_regression_line(float b_0, float b_1)
@@ -157,6 +161,7 @@ int main(void)
 
 	float b_0 = 0;
 	float b_1 = 0;
+	float r_squared = 0;
 	bool has_line = false;
 
 	//draw_grid();
@@ -201,12 +206,19 @@ int main(void)
 			if(has_line)
 			{
 				draw_regression_line(b_0, b_1);
+				char eq_lable[64];
+				char r2_lable[32];
+				snprintf(eq_lable, sizeof(eq_lable), "y = %.2fx + %.2f", b_1, b_0);
+				snprintf(r2_lable, sizeof(r2_lable), "R^2 = %.3f", r_squared);
+				
+				DrawText(eq_lable, 200, 30, 20, WHITE);
+				DrawText(r2_lable, 200, 55, 20, WHITE);
 			}
 
 			if(draw_button(20, 20, "Generate"))
 			{
 				draw_points(MAX_POINTS);
-				linear_regression(&b_0, &b_1);
+				linear_regression(&b_0, &b_1, &r_squared);
 				has_line = true;
 				TraceLog(LOG_INFO, "button clicked : generated 10 random data points");
 			}
