@@ -34,27 +34,6 @@ void draw_grid()
 	}
 }
 
-/*
-void draw_point()
-{
-	int32_t max_x_index = WIDTH / GRID_SPACING;
-        int32_t max_y_index = (HEIGHT - GRAPH_TOP) / GRID_SPACING;
-
-        int32_t x_index = rand() % (max_x_index + 1);
-        int32_t y_index = rand() % (max_y_index + 1);
-
-        int32_t x = x_index * GRID_SPACING;
-        int32_t y = GRAPH_TOP + y_index * GRID_SPACING;
-
-	//stores the cordinates of the random points
-	points[point_count].x = x;
-	points[point_count].y = y;
-	point_count++;
-
-        DrawCircle(x, y, 5, RED);
-}
-*/
-
 void draw_points(int32_t n)
 {
 	int32_t max_x_index = WIDTH / GRID_SPACING;
@@ -89,6 +68,15 @@ void draw_points(int32_t n)
 	}
 }
 
+void to_graph_space(Vector2 *graph_points, int32_t max_y_index)
+{
+	for(int32_t i = 0; i < point_count; i++)
+	{
+		graph_points[i].x = points[i].x / (float)GRID_SPACING;
+		graph_points[i].y = (float)max_y_index - (points[i].y - GRAPH_TOP) / (float)GRID_SPACING;
+	}
+}
+
 /* linear regression formula: Y =  B_0 + (B_1 * X)
  * Y = dependent variable (outcome)
  * X = independent variable (predictor)
@@ -97,15 +85,15 @@ void draw_points(int32_t n)
  * e = error term (residuals)
  */
 
-void linear_regression(float *b_0, float *b_1, float *r_squared)
+void linear_regression(Vector2 *pts, float *b_0, float *b_1, float *r_squared)
 {
 	float x_sum = 0;
 	float y_sum = 0;
 
 	for(int32_t i = 0; i < point_count; i++)
 	{
-		x_sum += points[i].x;
-		y_sum += points[i].y;
+		x_sum += pts[i].x;
+		y_sum += pts[i].y;
 	}
 
 
@@ -118,8 +106,8 @@ void linear_regression(float *b_0, float *b_1, float *r_squared)
 
 	for(int32_t i = 0; i < point_count; i++)
 	{
-		float dx = points[i].x - x_mean;
-		float dy = points[i].y - y_mean;
+		float dx = pts[i].x - x_mean;
+		float dy = pts[i].y - y_mean;
 		numerator += dx * dy;
 		denominator += dx * dx;
 		syy += dy * dy;
@@ -130,10 +118,15 @@ void linear_regression(float *b_0, float *b_1, float *r_squared)
 	*r_squared = (numerator * numerator) / (denominator * syy);
 }
 
-void draw_regression_line(float b_0, float b_1)
+void draw_regression_line(float b_0, float b_1, int32_t max_y_index)
 {
-	int32_t y_start = (int32_t)(b_0 + b_1 * 0);
-	int32_t y_end = (int32_t)(b_0 + b_1 * WIDTH);
+	float x0_graph = 0.0f;
+	float x1_graph = WIDTH / (float)GRID_SPACING;
+	float y0_graph = b_0 + b_1 * x0_graph;
+	float y1_graph = b_0 + b_1 * x1_graph;
+
+	int32_t y_start = (int32_t)(GRAPH_TOP + (max_y_index - y0_graph) * GRID_SPACING);
+	int32_t y_end = (int32_t)(GRAPH_TOP + (max_y_index - y1_graph) * GRID_SPACING);
 	DrawLine(0, y_start, WIDTH, y_end, GREEN);
 }
 
@@ -162,6 +155,7 @@ int main(void)
 	float b_0 = 0;
 	float b_1 = 0;
 	float r_squared = 0;
+
 	bool has_line = false;
 
 	//draw_grid();
@@ -175,6 +169,7 @@ int main(void)
 			int32_t max_y_index = (HEIGHT - GRAPH_TOP) / GRID_SPACING;
 
 			Vector2 mouse = GetMousePosition();
+
 			for(int32_t i = 0; i < point_count; i++)
 			{
         			DrawCircle(points[i].x, points[i].y, 5, RED);
@@ -205,7 +200,7 @@ int main(void)
 			}
 			if(has_line)
 			{
-				draw_regression_line(b_0, b_1);
+				draw_regression_line(b_0, b_1, max_y_index);
 				char eq_lable[64];
 				char r2_lable[32];
 				snprintf(eq_lable, sizeof(eq_lable), "y = %.2fx + %.2f", b_1, b_0);
@@ -218,7 +213,9 @@ int main(void)
 			if(draw_button(20, 20, "Generate"))
 			{
 				draw_points(MAX_POINTS);
-				linear_regression(&b_0, &b_1, &r_squared);
+				Vector2 graph_points[MAX_POINTS];
+				to_graph_space(graph_points, max_y_index); 
+				linear_regression(graph_points, &b_0, &b_1, &r_squared);
 				has_line = true;
 				TraceLog(LOG_INFO, "button clicked : generated 10 random data points");
 			}
