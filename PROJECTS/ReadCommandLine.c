@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+enum Permissions
+{
+	ADMIN 	= 1 << 0, //0001
+	USER 	= 1 << 1, //0010
+	GUEST 	= 1 << 2  //0100
+}
+
 /*
  * argc is the integer count
  * argv is the vector 
