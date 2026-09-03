@@ -25,4 +25,12 @@ void user_set_username(User *user, const char *username);
 void user_set_password(User *user, const char *password);
 void user_set_age(User *user, int32_t age);
 
+const char *user_get_first_name(const User *user);
+const char *user_get_middle_name(const User *user);
+const char *user_get_last_name(const User *user);
+const char *user_get_username(const User *user);
+const char *user_get_password(const User *user);
+const char *user_get_full_name(const User *user);
+int32_t user_get_age(const User *user);
+uint32_t user_get_id(const User *user);
 #endif

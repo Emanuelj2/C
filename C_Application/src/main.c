@@ -48,13 +48,31 @@ int main(void)
         printf("Username: %s\n", user2.username);
         printf("Age: %d\n\n", user2.age);
 
-
+	
         printf("ID: %u\n", user3.id);
         printf("Name: %s %s %s\n", user3.first_name,
                                    user3.middle_name,
                                    user3.last_name);
         printf("Username: %s\n", user3.username);
         printf("Age: %d\n", user3.age);
+
+	puts("getters");
+	printf("ID: %u\n", user_get_id(&user));
+	printf("Name: %s\n", user_get_full_name(&user));
+	printf("Username: %s\n", user_get_username(&user));
+	printf("Age: %d\n\n", user_get_age(&user));
+
+
+	printf("ID: %u\n", user_get_id(&user2));
+	printf("Name: %s\n", user_get_full_name(&user2));
+	printf("Username: %s\n", user_get_username(&user2));
+	printf("Age: %d\n\n", user_get_age(&user2));
+
+
+	printf("ID: %u\n", user_get_id(&user3));
+	printf("Name: %s\n", user_get_full_name(&user3));
+	printf("Username: %s\n", user_get_username(&user3));
+	printf("Age: %d\n", user_get_age(&user3));
 
 	return 0;
 }

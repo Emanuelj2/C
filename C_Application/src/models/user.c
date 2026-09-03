@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include "user.h"
 
 static uint32_t next_user_id = 1;
@@ -45,4 +46,66 @@ void user_set_password(User *user, const char *password)
 void user_set_age(User *user, int32_t age)
 {
 	user->age = age;
+}
+
+const char *user_get_first_name(const User *user)
+{
+	return user->first_name;
+}
+
+const char *user_get_middle_name(const User *user)
+{
+	return user->middle_name;
+}
+
+const char *user_get_last_name(const User *user)
+{
+	return user->last_name;
+}
+
+const char *user_get_username(const User *user)
+{
+	return user->username;
+}
+
+const char *user_get_password(const User *user)
+{
+	return user->password;
+}
+
+const char *user_get_full_name(const User *user)
+{
+	static char full_name[150];
+
+	if(user->middle_name[0] == '\0')
+	{
+		snprintf(
+                        full_name,
+                        sizeof(full_name),
+                        "%s %s",
+                        user->first_name,
+                        user->last_name
+                        );
+	}
+	else
+	{
+		snprintf(
+			full_name,
+			sizeof(full_name), 
+			"%s %s %s",
+			user->first_name,
+			user->middle_name,
+			user->last_name
+			);
+	}
+	return full_name;
+}
+int32_t user_get_age(const User *user)
+{
+	return user->age;
+}
+
+uint32_t user_get_id(const User *user)
+{
+	return user->id;
 }
