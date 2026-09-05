@@ -34,3 +34,85 @@ void database_destroy(Database *database)
 	database->user_capacity = 0;
 }
 
+
+//users table
+int database_add_user(Database *database, const User *user)
+{
+	if(database->user_count >= database->user_capacity)
+	{
+		size_t new_capacity = database->user_capacity * 2;
+
+		User *new_users = realloc(database->users, sizeof(User) * new_capacity);
+
+		if(new_users == NULL)
+		{
+			return 0;
+		}
+
+		database->users = new_users;
+		database->user_capacity = new_capacity;
+	}
+
+	database->users[database->count] = *user;
+
+	database->user_count++;
+
+	return 1;
+}
+
+User *database_get_user(Database *database, size_t index)
+{
+	if(index >= database->user_count)
+	{
+		return NULL;
+	}
+	
+	return &database->users[index];	
+}
+
+size_t database_get_user_count(const Database *database)
+{
+	return database->user_count;
+}
+
+int database_remove_user(Database *database, size_t index, uint32_t user_id)
+{
+	if(database->user_count == 0)
+	{
+		return 0;
+	}	
+	//look for the user
+	for(size_t i = 0; i < database->user_count; i++)
+	{
+		if(database->users[i].id == user_id)
+		{
+			return 1;
+		}
+
+	}
+
+	return 0;
+}
+
+int database_update_user(Database *database, size_t index, const User *user, uint32_t user_id)
+{
+	if(database->user_count == 0)
+	{
+		return 0;
+	}
+
+
+	if(index >= database->user_count)
+	{
+		return 0;
+	}
+
+	if(database->users[i].id != user_id)
+	{
+		return 0;
+	}
+
+	database->users[index] = *user;
+
+	return 1;
+}
