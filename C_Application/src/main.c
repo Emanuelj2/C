@@ -2,6 +2,8 @@
 
 #include "models/user.h"
 #include "database/database.h"
+#include "repository/user_repository.h"
+
 
 int main(void)
 {

@@ -5,7 +5,8 @@ CFLAGS = -Wall -Wextra -I./src
 
 SRC = $(wildcard src/*.c) \
       $(wildcard src/models/*c) \
-      $(wildcard src/database/*c)
+      $(wildcard src/database/*c) \
+      $(wildcard src/repository/*c)
 
 TARGET = app
 
