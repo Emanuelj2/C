@@ -4,7 +4,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -I./src
 
 SRC = $(wildcard src/*.c) \
-      $(wildcard src/models/*c)
+      $(wildcard src/models/*c) \
+      $(wildcard src/database/*c)
 
 TARGET = app
 
